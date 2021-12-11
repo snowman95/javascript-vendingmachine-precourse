@@ -4,14 +4,14 @@ button {
   font-size: 15px;
   font-weight: 700;
   border: 1px solid black;
-  background-color: transparent;
+  background-color: tomato;
   border-radius: 10px;
 }
 button:hover {
-  color: white;
+  color: tomato;
   background-color: black;
 }
-.header-title {
+#header-title {
   font-size: 30px;
   margin-bottom: 20px;
 }

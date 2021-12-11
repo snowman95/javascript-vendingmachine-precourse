@@ -1,6 +1,6 @@
-import Component from "./Component.js";
+import component from "./component.js";
 
-export default class Header {
+export default class header {
   constructor(target) {
     this.target = target;
     this.createHeader();
@@ -8,14 +8,14 @@ export default class Header {
     this.createButtons();
   }
   createHeader() {
-    this.Header = new Component({
+    this.Header = new component({
       target: this.target,
       type: "header",
       id: "header",
     });
   }
   createTitle() {
-    this.title = new Component({
+    this.title = new component({
       target: this.Header.elem,
       type: "div",
       id: "header-title",
@@ -23,19 +23,19 @@ export default class Header {
     });
   }
   createButtons() {
-    this.productAddMenu = new Component({
+    this.productAddMenu = new component({
       target: this.Header.elem,
       type: "button",
       id: "product-add-menu",
       innerHtml: "상품 관리",
     });
-    this.machineManageMenu = new Component({
+    this.machineManageMenu = new component({
       target: this.Header.elem,
       type: "button",
       id: "vending-machine-manage-menu",
       innerHtml: "잔돈 충전",
     });
-    this.purchaseMenu = new Component({
+    this.purchaseMenu = new component({
       target: this.Header.elem,
       type: "button",
       id: "product-purchase-menu",

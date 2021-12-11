@@ -1,8 +1,8 @@
-export default class Component {
+export default class component {
   constructor({ target, type, id, innerHtml = "" }) {
     this.target = target;
     this.elem = document.createElement(type);
-    this.elem.classList.add(id);
+    this.elem.id = id;
     this.elem.innerHTML = innerHtml;
     this.target.appendChild(this.elem);
   }
