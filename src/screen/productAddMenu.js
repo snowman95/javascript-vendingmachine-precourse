@@ -2,15 +2,13 @@ import component from "../components/component.js";
 import input from "../components/input.js";
 import table from "../components/table.js";
 import productStore from "../store/productStore.js";
-import coinStore from "../store/coinStore.js";
+import chargeStore from "../store/chargeStore.js";
 import { product } from "../product.js";
 import { ACTION } from "../store/action.js";
 
 export default class productAddMenu {
   constructor(target) {
     this.target = target;
-    this.productStore = productStore;
-    this.coinStore = coinStore;
     this.createProductAddSection(this.target);
     this.createProductStatusSection(this.target);
     this.addButton.addEvent("click", () => this.addProduct());

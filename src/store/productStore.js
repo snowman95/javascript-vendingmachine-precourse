@@ -4,6 +4,7 @@ import { product } from "../product.js";
 export const PRODUCT_KEY = "product";
 
 const reducer = (state, action) => {
+  console.log(state, action);
   switch (action.type) {
     case ACTION.UPDATE:
       if (state) {
@@ -14,8 +15,6 @@ const reducer = (state, action) => {
       } else {
         return [action.payload];
       }
-    case ACTION.GET:
-      return state;
     case ACTION.PURCHASE:
       const target = state.find((data) => data.getId() === action.payload);
       if (target && target.purchase()) {
@@ -35,11 +34,3 @@ const productStore = createObjectStore(
   reducer
 );
 export default productStore;
-
-// export function purchase(id) {
-//   const products = getStorageDataById(PRODUCT_KEY, id);
-//   if (products && products.purchase()) {
-//     updateStorage(PRODUCT_KEY, products);
-//     updateStorage(CHARGE_KEY, getStorageData(CHARGE_KEY) - products.price);
-//   }
-// }

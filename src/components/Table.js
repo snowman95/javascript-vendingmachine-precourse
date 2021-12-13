@@ -27,9 +27,9 @@ export default class table extends component {
       return;
     }
     stateList.forEach((data) => {
-      const key = data.getId();
+      const key = data.id;
       const tr = this.tableRows.find(
-        (row) => row.elem.id === `${this.id}-${key}-item`
+        (row) => row.elem.id === `${this.id}-item-${key}`
       );
       if (tr) tr.update(data, needButton);
       else this.tableRows.push(this.createNewRow(data, needButton));
@@ -42,7 +42,7 @@ export default class table extends component {
       type: "tr",
       id: `${this.id}`,
       tableHeader: this.tableHeader,
-      key: state.getId(),
+      key: state.id,
     });
     tr.update(state, needButton);
     return tr;

@@ -1,11 +1,11 @@
 import productStore from "../store/productStore.js";
 import component from "./component.js";
 import { ACTION } from "../store/action.js";
-import coinStore from "../store/coinStore.js";
+import chargeStore from "../store/chargeStore.js";
 
 export default class tableRow extends component {
   constructor({ target, type, id, innerHtml = "", tableHeader = "", key }) {
-    super({ target, type, id: `${id}-${key}-item`, innerHtml });
+    super({ target, type, id: `${id}-item-${key}`, innerHtml });
     this.id = id;
     this.key = key;
     this.headerKeys = Object.keys(tableHeader);
@@ -52,7 +52,7 @@ export default class tableRow extends component {
     tdButton.elem.classList.add("purchase-button");
     tdButton.addEvent("click", () => {
       const oldProduct = productStore.getState().find((p) => p.getId() === id);
-      if (coinStore.getState() < oldProduct.price) {
+      if (chargeStore.getState() < oldProduct.price) {
         return;
       }
       productStore.dispatch({
@@ -62,7 +62,7 @@ export default class tableRow extends component {
       const newProduct = productStore.getState().find((p) => p.getId() === id);
 
       if (oldProduct.quantity !== newProduct.quantity) {
-        coinStore.dispatch({ type: ACTION.ADD, payload: -newProduct.price });
+        chargeStore.dispatch({ type: ACTION.ADD, payload: -newProduct.price });
         this.update(newProduct);
       }
     });
