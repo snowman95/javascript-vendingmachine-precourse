@@ -1,15 +1,20 @@
 import component from "../components/component.js";
 import input from "../components/input.js";
 import table from "../components/table.js";
+import productStore from "../store/productStore.js";
+import coinStore from "../store/coinStore.js";
 import { product } from "../product.js";
-import { STORAGE_KEY } from "../storage.js";
+import { ACTION } from "../store/action.js";
 
-export default class productAdd {
+export default class productAddMenu {
   constructor(target) {
     this.target = target;
+    this.productStore = productStore;
+    this.coinStore = coinStore;
     this.createProductAddSection(this.target);
     this.createProductStatusSection(this.target);
     this.addButton.addEvent("click", () => this.addProduct());
+    this.subscribe();
   }
   createProductAddSection(target) {
     this.addSection = new component({
@@ -71,16 +76,6 @@ export default class productAdd {
       innerHtml: "추가하기",
     });
   }
-  addProduct() {
-    const newProduct = new product(
-      this.name.elem.value,
-      this.price.elem.value,
-      this.quantity.elem.value
-    );
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newProduct));
-    this.table.update(newProduct.getInfoByArray());
-  }
-
   createProductStatusSection(target) {
     this.statusSection = new component({
       target: target,
@@ -105,5 +100,21 @@ export default class productAdd {
       id: "product-manage",
       tableHeader: { name: "상품명", price: "가격", quantity: "수량" },
     });
+  }
+  addProduct() {
+    if (this.name.elem.value) {
+      const newProduct = new product(
+        this.name.elem.value,
+        this.price.elem.value,
+        this.quantity.elem.value
+      );
+      productStore.dispatch({ type: ACTION.UPDATE, payload: newProduct });
+    }
+  }
+
+  subscribe() {
+    productStore.subscribeAll([ACTION.UPDATE, ACTION.PURCHASE], () =>
+      this.table.update(productStore.getState())
+    );
   }
 }
