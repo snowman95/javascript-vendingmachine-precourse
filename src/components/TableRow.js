@@ -1,40 +1,74 @@
+import productStore from "../store/productStore.js";
 import component from "./component.js";
+import { ACTION } from "../store/action.js";
+import coinStore from "../store/coinStore.js";
 
 export default class tableRow extends component {
   constructor({ target, type, id, innerHtml = "", tableHeader = "", key }) {
     super({ target, type, id: `${id}-${key}-item`, innerHtml });
     this.id = id;
     this.key = key;
-    this.tableHeader = tableHeader;
-    this.rowDataElements = [];
+    this.headerKeys = Object.keys(tableHeader);
+    this.rowElems = [];
     this.elem.classList.add(`${id}-item`);
   }
 
-  update(props) {
-    if (this.rowDataElements.length > 0) {
-      const keys = Object.keys(this.tableHeader);
-      props.map((text, index) => {
-        const td = this.rowDataElements.find(
-          (row) => row.elem.id === `${this.id}-${keys[index]}-${this.key}`
+  update(state, needButton = false) {
+    if (this.rowElems.length > 0 && typeof state === "object") {
+      state.getStateList().map((item, index) => {
+        const td = this.rowElems.find(
+          (row) => row.elem.id === this.getMainId(index)
         );
-        td.elem.innerText = text;
+        td.elem.setAttribute(`data-product-${state[item]}`, state[item]);
+        td.elem.innerText = item;
       });
     } else {
-      this.createNewRow(props);
+      this.createNewRow(state);
+      if (needButton) this.createNewButton(this.key);
     }
   }
 
-  createNewRow(props) {
-    const keys = Object.keys(this.tableHeader);
-    props.map((text, index) => {
+  createNewRow(state) {
+    state.getStateList().map((item, index) => {
       const td = new component({
         target: this.elem,
         type: "td",
-        id: `${this.id}-${keys[index]}-${props[index]}`,
-        innerHtml: `${text}`,
+        id: this.getMainId(index),
+        innerHtml: `${item}`,
       });
-      td.elem.classList.add(`${this.id}-${keys[index]}`);
-      this.rowDataElements = [...this.rowDataElements, td];
+      // dataset 속성 추가
+      td.elem.setAttribute(`data-product-${item}`, item);
+      td.elem.classList.add(`${this.id}-${this.headerKeys[index]}`);
+      this.rowElems = [...this.rowElems, td];
     });
+  }
+  createNewButton(id) {
+    const tdButton = new component({
+      target: this.elem,
+      type: "button",
+      id: `${this.id}-${this.key}-button`,
+      innerHtml: "구매하기",
+    });
+    tdButton.elem.classList.add("purchase-button");
+    tdButton.addEvent("click", () => {
+      const oldProduct = productStore.getState().find((p) => p.getId() === id);
+      if (coinStore.getState() < oldProduct.price) {
+        return;
+      }
+      productStore.dispatch({
+        type: ACTION.PURCHASE,
+        payload: id,
+      });
+      const newProduct = productStore.getState().find((p) => p.getId() === id);
+
+      if (oldProduct.quantity !== newProduct.quantity) {
+        coinStore.dispatch({ type: ACTION.ADD, payload: -newProduct.price });
+        this.update(newProduct);
+      }
+    });
+  }
+
+  getMainId(index) {
+    return `${this.id}-${this.headerKeys[index]}-${this.key}`;
   }
 }

@@ -21,23 +21,30 @@ export default class table extends component {
     });
   }
 
-  update(props = []) {
-    const tr = this.tableRows.find(
-      (row) => row.elem.id === `${this.id}-${props[0]}-item`
-    );
-    if (tr) tr.update(props);
-    else this.tableRows.push(this.createNewRow(props));
+  update(stateList = [], needButton = false) {
+    // stateList = 로컬스토리지 전체 데이터
+    if (!stateList || stateList.length === 0) {
+      return;
+    }
+    stateList.forEach((data) => {
+      const key = data.getId();
+      const tr = this.tableRows.find(
+        (row) => row.elem.id === `${this.id}-${key}-item`
+      );
+      if (tr) tr.update(data, needButton);
+      else this.tableRows.push(this.createNewRow(data, needButton));
+    });
   }
 
-  createNewRow(props) {
+  createNewRow(state, needButton) {
     const tr = new tableRow({
       target: this.elem,
       type: "tr",
       id: `${this.id}`,
       tableHeader: this.tableHeader,
-      key: props[0],
+      key: state.getId(),
     });
-    tr.update(props);
+    tr.update(state, needButton);
     return tr;
   }
 }

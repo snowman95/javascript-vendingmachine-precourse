@@ -13,4 +13,10 @@ export default class component {
       callback();
     });
   }
+  setText(newText) {
+    this.elem.innerHTML = newText;
+  }
+  getText() {
+    return this.elem.value;
+  }
 }
