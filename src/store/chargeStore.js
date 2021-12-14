@@ -10,6 +10,7 @@ const reducer = (state, action) => {
       const addNum = Number(action.payload);
       if (state) {
         if (Number(state) + addNum >= 0) return Number(state) + addNum;
+        else alert("error 잔돈 입력값 오류");
         return Number(state);
       }
       return addNum;

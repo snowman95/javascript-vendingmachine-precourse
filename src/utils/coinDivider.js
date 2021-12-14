@@ -1,7 +1,7 @@
 export const divideCoin = (totalCoin) => {
   totalCoin = Number(totalCoin);
-  const result = { 500: 0, 100: 0, 10: 0, 1: 0 };
-  for (const coin of [500, 100, 10, 1]) {
+  const result = { 500: 0, 100: 0, 50: 0, 10: 0 };
+  for (const coin of [500, 100, 50, 10]) {
     const count = Math.floor(totalCoin / coin);
     totalCoin -= coin * count;
     result[coin] = count;
@@ -10,13 +10,13 @@ export const divideCoin = (totalCoin) => {
 };
 
 export const concatCoin = (coinList) => {
-  return [500, 100, 10, 1].reduce((acc, cur) => acc + cur * coinList[cur], 0);
+  return [500, 100, 50, 10].reduce((acc, cur) => acc + cur * coinList[cur], 0);
 };
 
 export const settlement = (base, target) => {
-  let result = { 500: 0, 100: 0, 10: 0, 1: 0 };
+  let result = { 500: 0, 100: 0, 50: 0, 10: 0 };
 
-  for (const coin of [500, 100, 10, 1]) {
+  for (const coin of [500, 100, 50, 10]) {
     let diff = 0;
     if (base[coin] >= target[coin]) {
       // 잔돈을 내줄 수 있는 경우
