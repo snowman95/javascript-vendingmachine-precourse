@@ -1,7 +1,7 @@
 import component from "../components/component.js";
-import coinTable from "../components/coinTable.js";
 import Input from "../components/input.js";
-import Table from "../components/table.js";
+import Table from "../components/table/table.js";
+import coinTable from "../components/table/coinTable.js";
 import productStore from "../store/productStore.js";
 import { ACTION } from "../store/action.js";
 import { machineChargeStore, userChargeStore } from "../store/chargeStore.js";

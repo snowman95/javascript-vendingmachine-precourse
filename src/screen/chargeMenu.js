@@ -1,6 +1,6 @@
 import component from "../components/component.js";
 import Input from "../components/input.js";
-import coinTable from "../components/coinTable.js";
+import coinTable from "../components/table/coinTable.js";
 import { ACTION } from "../store/action.js";
 import { machineChargeStore } from "../store/chargeStore.js";
 import { divideCoin } from "../utils/coinDivider.js";

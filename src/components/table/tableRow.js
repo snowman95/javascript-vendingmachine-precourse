@@ -1,7 +1,7 @@
-import productStore from "../store/productStore.js";
-import component from "./component.js";
-import { ACTION } from "../store/action.js";
-import { userChargeStore } from "../store/chargeStore.js";
+import productStore from "../../store/productStore.js";
+import component from "../component.js";
+import { ACTION } from "../../store/action.js";
+import { userChargeStore } from "../../store/chargeStore.js";
 
 export default class tableRow extends component {
   constructor({ target, type, id, innerHtml = "", tableHeader = "", key }) {

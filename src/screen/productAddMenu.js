@@ -1,6 +1,6 @@
 import component from "../components/component.js";
 import input from "../components/input.js";
-import table from "../components/table.js";
+import table from "../components/table/table.js";
 import productStore from "../store/productStore.js";
 import { ACTION } from "../store/action.js";
 import menu from "./menu.js";

@@ -1,4 +1,4 @@
-import component from "./component.js";
+import component from "../component.js";
 import tableRow from "./tableRow.js";
 
 export default class table extends component {
