@@ -1,29 +1,25 @@
 import Header from "./components/header.js";
 import purchaseMenu from "./screen/purchaseMenu.js";
 import productAddMenu from "./screen/productAddMenu.js";
+import chargeMenu from "./screen/chargeMenu.js";
 import productStore from "./store/productStore.js";
-import chargeStore from "./store/chargeStore.js";
+import { machineChargeStore, userChargeStore } from "./store/chargeStore.js";
 import { ACTION } from "./store/action.js";
-import coinStore from "./store/coinStore.js";
-import { coin } from "./coin.js";
 
 export default class VendingMachine {
   constructor() {
     this.app = document.querySelector("#app");
     this.createHeader();
     this.createMenu();
-    if (chargeStore.getState() === null) {
-      chargeStore.dispatch({ type: ACTION.ADD, payload: 0 });
+    if (userChargeStore.getState() === null) {
+      userChargeStore.dispatch({ type: ACTION.UPDATE, payload: 0 });
     }
-
-    [500, 100, 10, 1].map((price) => {
-      coinStore.dispatch({
-        type: ACTION.UPDATE,
-        payload: new coin(price, ""),
-      });
-    });
+    if (machineChargeStore.getState() === null) {
+      machineChargeStore.dispatch({ type: ACTION.UPDATE, payload: 0 });
+    }
     productStore.publish(ACTION.UPDATE);
-    chargeStore.publish(ACTION.ADD);
+    machineChargeStore.publish(ACTION.UPDATE);
+    userChargeStore.publish(ACTION.UPDATE);
   }
   createHeader() {
     this.header = new Header(this.app);
@@ -36,6 +32,7 @@ export default class VendingMachine {
   createMenu() {
     this.productAddMenu = new productAddMenu(this.app);
     this.purchaseMenu = new purchaseMenu(this.app);
+    this.chargeMenu = new chargeMenu(this.app);
   }
 }
 

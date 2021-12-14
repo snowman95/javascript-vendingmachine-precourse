@@ -1,7 +1,7 @@
 import createObjectStore from "./objectStore.js";
 import { ACTION } from "./action.js";
 import { product } from "../product.js";
-export const PRODUCT_KEY = "product";
+const KEY = "product";
 
 const reducer = (state, action) => {
   console.log(state, action);
@@ -27,7 +27,7 @@ const reducer = (state, action) => {
 };
 
 const productStore = createObjectStore(
-  PRODUCT_KEY,
+  KEY,
   ({ name, price, quantity }) => {
     return new product(name, price, quantity);
   },
