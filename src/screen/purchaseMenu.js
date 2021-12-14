@@ -1,12 +1,11 @@
 import component from "../components/component.js";
-import Component from "../components/component.js";
+import coinTable from "../components/coinTable.js";
 import Input from "../components/input.js";
 import Table from "../components/table.js";
-import chargeStore from "../store/chargeStore.js";
 import productStore from "../store/productStore.js";
+import { machineChargeStore, userChargeStore } from "../store/chargeStore.js";
 import { ACTION } from "../store/action.js";
-import coinStore from "../store/coinStore.js";
-import coinTable from "../components/coinTable.js";
+import { concatCoin, divideCoin, settlement } from "../utils/coinDivider.js";
 
 const CHARGE_ID = "charge";
 const PURCHASE_ID = "product-purchase";
@@ -21,7 +20,7 @@ export default class purchaseMenu {
     this.subscribe();
   }
   createCoinInputSection(target) {
-    this.addSection = new Component({
+    this.addSection = new component({
       target: target,
       type: "section",
       id: `${CHARGE_ID}-section`,
@@ -33,7 +32,7 @@ export default class purchaseMenu {
     this.createInsertText(this.addSection.elem);
   }
   createInsertTitle(target) {
-    this.insertTitle = new Component({
+    this.insertTitle = new component({
       target: target,
       type: "div",
       id: `${CHARGE_ID}-title`,
@@ -58,24 +57,24 @@ export default class purchaseMenu {
     });
   }
   createInsertButton(target) {
-    this.insertButton = new Component({
+    this.insertButton = new component({
       target: target,
       type: "button",
       id: `${CHARGE_ID}-button`,
       innerHtml: "투입하기",
     });
-    this.insertButton.addEvent("click", () => {
-      this.insertCoin(Number(this.insertInput.getText()));
-    });
+    this.insertButton.addEvent("click", () =>
+      this.insertCoin(Number(this.insertInput.getText()))
+    );
   }
   createInsertText(target) {
-    this.insertAmountLabel = new Component({
+    this.insertAmountLabel = new component({
       target: target,
       type: "span",
       id: `${CHARGE_ID}-amount-label`,
       innerHtml: "투입한 금액:",
     });
-    this.insertAmount = new Component({
+    this.insertAmount = new component({
       target: target,
       type: "span",
       id: `${CHARGE_ID}-amount`,
@@ -83,7 +82,7 @@ export default class purchaseMenu {
   }
 
   createProductStatusSection(target) {
-    this.productStatusSection = new Component({
+    this.productStatusSection = new component({
       target: target,
       type: "section",
       id: `${PURCHASE_ID}-section`,
@@ -93,7 +92,7 @@ export default class purchaseMenu {
   }
 
   createProductStatusTitle(target) {
-    this.productStatusTitle = new Component({
+    this.productStatusTitle = new component({
       target: target,
       type: "div",
       id: `${PURCHASE_ID}-title`,
@@ -116,7 +115,7 @@ export default class purchaseMenu {
   }
 
   createCoinStatusSection(target) {
-    this.coinStatusSection = new Component({
+    this.coinStatusSection = new component({
       target: target,
       type: "section",
       id: `${COIN_ID}-section`,
@@ -126,7 +125,7 @@ export default class purchaseMenu {
     this.createCoinStatusTable(this.coinStatusSection.elem);
   }
   createCoinStatusTitle(target) {
-    this.productStatusTitle = new Component({
+    this.productStatusTitle = new component({
       target: target,
       type: "div",
       id: `${COIN_ID}-title`,
@@ -134,13 +133,13 @@ export default class purchaseMenu {
     });
   }
   createCoinStatusButton(target) {
-    this.coinStatusButton = new Component({
+    this.coinStatusButton = new component({
       target: target,
       type: "button",
       id: `${COIN_ID}-button`,
       innerHtml: "반환하기",
     });
-    this.coinStatusButton.addEvent("click", () => this.returnCoin());
+    this.coinStatusButton.addEvent("click", () => this.showCoinTable());
   }
 
   createCoinStatusTable(target) {
@@ -153,26 +152,47 @@ export default class purchaseMenu {
         price: "개수",
       },
     });
-    this.coinStatusTable.update(coinStore.getState());
   }
   insertCoin(inputCoin) {
-    chargeStore.dispatch({
+    userChargeStore.dispatch({
       type: ACTION.ADD,
       payload: inputCoin,
     });
   }
-  returnCoin() {}
-  subscribe() {
-    chargeStore.subscribe(ACTION.ADD, () =>
-      this.insertAmount.setText(chargeStore.getState())
-    );
-    productStore.subscribeAll([ACTION.UPDATE, ACTION.PURCHASE], () => {
-      this.productStatusTable.update(productStore.getState(), true);
-      this.insertAmount.setText(chargeStore.getState());
+  showInsertCoin() {
+    this.insertAmount.setText(userChargeStore.getState());
+  }
+  showProductStatusTable() {
+    this.productStatusTable.update(productStore.getState(), true);
+  }
+  showCoinStatusTable(state) {
+    this.coinStatusTable.update(state);
+  }
+  showCoinTable() {
+    const userCoin = divideCoin(userChargeStore.getState());
+    const machineCoin = divideCoin(machineChargeStore.getState());
+    const { base, target, result } = settlement(machineCoin, userCoin);
+    machineChargeStore.dispatch({
+      type: ACTION.UPDATE,
+      payload: concatCoin(base),
     });
-
-    coinStore.subscribe(ACTION.UPDATE, () =>
-      this.coinStatusTable.update(coinStore.getState())
+    userChargeStore.dispatch({
+      type: ACTION.UPDATE,
+      payload: concatCoin(target),
+    });
+    this.showCoinStatusTable(result);
+  }
+  subscribe() {
+    productStore.subscribeAll([ACTION.UPDATE, ACTION.PURCHASE], () => {
+      this.showInsertCoin();
+      this.showProductStatusTable();
+    });
+    userChargeStore.subscribeAll(
+      [ACTION.ADD, ACTION.UPDATE, ACTION.PURCHASE],
+      () => {
+        this.showInsertCoin();
+      }
     );
+    machineChargeStore.subscribe(ACTION.UPDATE, () => this.showInsertCoin());
   }
 }

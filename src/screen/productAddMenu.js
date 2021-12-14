@@ -2,7 +2,6 @@ import component from "../components/component.js";
 import input from "../components/input.js";
 import table from "../components/table.js";
 import productStore from "../store/productStore.js";
-import chargeStore from "../store/chargeStore.js";
 import { product } from "../product.js";
 import { ACTION } from "../store/action.js";
 

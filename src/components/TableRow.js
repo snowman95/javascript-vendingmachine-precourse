@@ -1,7 +1,7 @@
 import productStore from "../store/productStore.js";
 import component from "./component.js";
 import { ACTION } from "../store/action.js";
-import chargeStore from "../store/chargeStore.js";
+import { userChargeStore } from "../store/chargeStore.js";
 
 export default class tableRow extends component {
   constructor({ target, type, id, innerHtml = "", tableHeader = "", key }) {
@@ -52,7 +52,7 @@ export default class tableRow extends component {
     tdButton.elem.classList.add("purchase-button");
     tdButton.addEvent("click", () => {
       const oldProduct = productStore.getState().find((p) => p.getId() === id);
-      if (chargeStore.getState() < oldProduct.price) {
+      if (userChargeStore.getState() < oldProduct.price) {
         return;
       }
       productStore.dispatch({
@@ -62,7 +62,10 @@ export default class tableRow extends component {
       const newProduct = productStore.getState().find((p) => p.getId() === id);
 
       if (oldProduct.quantity !== newProduct.quantity) {
-        chargeStore.dispatch({ type: ACTION.ADD, payload: -newProduct.price });
+        userChargeStore.dispatch({
+          type: ACTION.ADD,
+          payload: -newProduct.price,
+        });
         this.update(newProduct);
       }
     });

@@ -8,6 +8,12 @@ const createStore = (key, reducer) => {
     events[actionType].push(eventCallback);
   };
 
+  const subscribeAll = (actionType = [], eventCallback) => {
+    for (const type of actionType) {
+      subscribe(type, eventCallback);
+    }
+  };
+
   const publish = (actionType) => {
     if (!events[actionType]) {
       return;
@@ -28,6 +34,7 @@ const createStore = (key, reducer) => {
   return {
     getState,
     subscribe,
+    subscribeAll,
     dispatch,
     publish,
   };

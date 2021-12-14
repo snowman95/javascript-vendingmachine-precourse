@@ -1,7 +1,8 @@
 import createStore from "./store.js";
 import { ACTION } from "./action.js";
 
-export const CHARGE_KEY = "charge";
+const USER_KEY = "charge";
+const MACHINE_KEY = "machine_charge";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -12,13 +13,11 @@ const reducer = (state, action) => {
         return Number(state);
       }
       return addNum;
-    case ACTION.GET:
-      return state;
+    case ACTION.UPDATE:
+      return Number(action.payload);
     default:
       return state;
   }
 };
-
-const chargeStore = createStore(CHARGE_KEY, reducer);
-
-export default chargeStore;
+export const userChargeStore = createStore(USER_KEY, reducer);
+export const machineChargeStore = createStore(MACHINE_KEY, reducer);

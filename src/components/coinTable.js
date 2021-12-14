@@ -10,17 +10,12 @@ export default class coinTable extends table {
   }
 
   update(stateList = []) {
-    // stateList = 로컬스토리지 전체 데이터
-    if (!stateList || stateList.length === 0) {
-      return;
-    }
-    stateList.forEach((data) => {
-      const key = data.id;
+    Object.keys(stateList).forEach((key) => {
       const tr = this.tableRows.find(
-        (row) => row.elem.id === `${this.id}-item-${key}`
+        (row) => row.elem.id === `${this.id}-${key}-item`
       );
-      if (tr) tr.update(data);
-      else this.tableRows.push(this.createNewRow(data));
+      if (tr) tr.update({ [key]: stateList[key] });
+      else this.tableRows.push(this.createNewRow({ [key]: stateList[key] }));
     });
   }
 
@@ -29,7 +24,7 @@ export default class coinTable extends table {
       target: this.elem,
       type: "tr",
       id: `${this.id}`,
-      key: state.id,
+      key: Object.keys(state)[0],
     });
     tr.update(state);
     return tr;
