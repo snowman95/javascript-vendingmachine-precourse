@@ -1,4 +1,4 @@
-import Header from "./components/header.js";
+import header from "./components/header.js";
 import purchaseMenu from "./screen/purchaseMenu.js";
 import productAddMenu from "./screen/productAddMenu.js";
 import chargeMenu from "./screen/chargeMenu.js";
@@ -14,7 +14,7 @@ export default class VendingMachine {
     this.init();
   }
   createHeader() {
-    this.header = new Header(this.app);
+    this.header = new header(this.app);
     this.header.addEvent({
       onProductAddClicked: () => this.showMenu(this.productAddMenu),
       onManageMenuClicked: () => this.showMenu(this.chargeMenu),
