@@ -1,5 +1,5 @@
-import component from "../components/component.js";
-import Input from "../components/input.js";
+import component from "../component.js";
+import Input from "../input.js";
 import coinTable from "../components/table/coinTable.js";
 import { ACTION } from "../store/action.js";
 import { machineChargeStore } from "../store/chargeStore.js";

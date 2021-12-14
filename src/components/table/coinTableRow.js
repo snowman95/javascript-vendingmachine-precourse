@@ -1,4 +1,4 @@
-import component from "../component.js";
+import component from "../../component.js";
 
 export default class coinTableRow extends component {
   constructor({ target, type, id, innerHtml = "", key }) {

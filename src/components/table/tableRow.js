@@ -1,5 +1,5 @@
 import productStore from "../../store/productStore.js";
-import component from "../component.js";
+import component from "../../component.js";
 import { ACTION } from "../../store/action.js";
 import { userChargeStore } from "../../store/chargeStore.js";
 

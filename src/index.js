@@ -1,4 +1,4 @@
-import header from "./components/header.js";
+import header from "./header.js";
 import purchaseMenu from "./screen/purchaseMenu.js";
 import productAddMenu from "./screen/productAddMenu.js";
 import chargeMenu from "./screen/chargeMenu.js";

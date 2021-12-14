@@ -1,5 +1,4 @@
-import component from "../components/component.js";
-import { ACTION } from "../store/action.js";
+import component from "../component.js";
 
 export default class menu {
   constructor(target) {
