@@ -11,6 +11,22 @@ export default class VendingMachine {
     this.app = document.querySelector("#app");
     this.createHeader();
     this.createMenu();
+    this.init();
+  }
+  createHeader() {
+    this.header = new Header(this.app);
+    this.header.addEvent({
+      onProductAddClicked: () => this.showMenu(this.productAddMenu),
+      onManageMenuClicked: () => this.showMenu(this.chargeMenu),
+      onPurchageMenuClicked: () => this.showMenu(this.purchaseMenu),
+    });
+  }
+  createMenu() {
+    this.productAddMenu = new productAddMenu(this.app);
+    this.purchaseMenu = new purchaseMenu(this.app);
+    this.chargeMenu = new chargeMenu(this.app);
+  }
+  init() {
     if (userChargeStore.getState() === null) {
       userChargeStore.dispatch({ type: ACTION.UPDATE, payload: 0 });
     }
@@ -20,19 +36,12 @@ export default class VendingMachine {
     productStore.publish(ACTION.UPDATE);
     machineChargeStore.publish(ACTION.UPDATE);
     userChargeStore.publish(ACTION.UPDATE);
+    this.showMenu(this.productAddMenu);
   }
-  createHeader() {
-    this.header = new Header(this.app);
-    this.header.addEvent({
-      onProductAddClicked: () => console.log("상품 관리 탭"),
-      onManageMenuClicked: () => console.log("잔돈 충전 탭"),
-      onPurchageMenuClicked: () => console.log("상품 구매 탭"),
-    });
-  }
-  createMenu() {
-    this.productAddMenu = new productAddMenu(this.app);
-    this.purchaseMenu = new purchaseMenu(this.app);
-    this.chargeMenu = new chargeMenu(this.app);
+  showMenu(node) {
+    if (this.currentDisplayMenu) this.currentDisplayMenu.hide();
+    this.currentDisplayMenu = node;
+    this.currentDisplayMenu.show();
   }
 }
 

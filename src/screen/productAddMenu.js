@@ -2,16 +2,19 @@ import component from "../components/component.js";
 import input from "../components/input.js";
 import table from "../components/table.js";
 import productStore from "../store/productStore.js";
-import { product } from "../product.js";
 import { ACTION } from "../store/action.js";
+import menu from "./menu.js";
+import { product } from "../product.js";
 
-export default class productAddMenu {
+export default class productAddMenu extends menu {
   constructor(target) {
-    this.target = target;
-    this.createProductAddSection(this.target);
-    this.createProductStatusSection(this.target);
-    this.addButton.addEvent("click", () => this.addProduct());
+    super(target);
+    this.createElemnt();
     this.subscribe();
+  }
+  createElemnt() {
+    this.createProductAddSection(this.container.elem);
+    this.createProductStatusSection(this.container.elem);
   }
   createProductAddSection(target) {
     this.addSection = new component({
@@ -72,6 +75,7 @@ export default class productAddMenu {
       id: "product-add-button",
       innerHtml: "추가하기",
     });
+    this.addButton.addEvent("click", () => this.addProduct());
   }
   createProductStatusSection(target) {
     this.statusSection = new component({
@@ -100,12 +104,14 @@ export default class productAddMenu {
   }
   addProduct() {
     if (this.name.elem.value) {
-      const newProduct = new product(
-        this.name.elem.value,
-        this.price.elem.value,
-        this.quantity.elem.value
-      );
-      productStore.dispatch({ type: ACTION.UPDATE, payload: newProduct });
+      productStore.dispatch({
+        type: ACTION.UPDATE,
+        payload: new product(
+          this.name.elem.value,
+          this.price.elem.value,
+          this.quantity.elem.value
+        ),
+      });
     }
   }
 

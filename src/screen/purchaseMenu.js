@@ -3,21 +3,25 @@ import coinTable from "../components/coinTable.js";
 import Input from "../components/input.js";
 import Table from "../components/table.js";
 import productStore from "../store/productStore.js";
-import { machineChargeStore, userChargeStore } from "../store/chargeStore.js";
 import { ACTION } from "../store/action.js";
+import { machineChargeStore, userChargeStore } from "../store/chargeStore.js";
 import { concatCoin, divideCoin, settlement } from "../utils/coinDivider.js";
+import menu from "./menu.js";
 
 const CHARGE_ID = "charge";
 const PURCHASE_ID = "product-purchase";
 const COIN_ID = "coin";
 
-export default class purchaseMenu {
+export default class purchaseMenu extends menu {
   constructor(target) {
-    this.target = target;
-    this.createCoinInputSection(this.target);
-    this.createProductStatusSection(this.target);
-    this.createCoinStatusSection(this.target);
+    super(target);
+    this.createElemnt();
     this.subscribe();
+  }
+  createElemnt() {
+    this.createCoinInputSection(this.container.elem);
+    this.createProductStatusSection(this.container.elem);
+    this.createCoinStatusSection(this.container.elem);
   }
   createCoinInputSection(target) {
     this.addSection = new component({

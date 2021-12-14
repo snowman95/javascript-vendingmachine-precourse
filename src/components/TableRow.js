@@ -37,7 +37,7 @@ export default class tableRow extends component {
         innerHtml: `${item}`,
       });
       // dataset 속성 추가
-      td.elem.setAttribute(`data-product-${item}`, item);
+      // td.elem.setAttribute(`data-product-${item}`, item);
       td.elem.classList.add(`${this.id}-${this.headerKeys[index]}`);
       this.rowElems = [...this.rowElems, td];
     });

@@ -1,23 +1,26 @@
 import component from "../components/component.js";
-import Component from "../components/component.js";
-import coinTable from "../components/coinTable.js";
 import Input from "../components/input.js";
-import { machineChargeStore } from "../store/chargeStore.js";
+import coinTable from "../components/coinTable.js";
 import { ACTION } from "../store/action.js";
+import { machineChargeStore } from "../store/chargeStore.js";
 import { divideCoin } from "../utils/coinDivider.js";
+import menu from "./menu.js";
 
 const CHARGE_ID = "charge";
 const COIN_ID = "coin";
 
-export default class chargeMenu {
+export default class chargeMenu extends menu {
   constructor(target) {
-    this.target = target;
-    this.createCoinInputSection(this.target);
-    this.createCoinStatusSection(this.target);
+    super(target);
+    this.createElemnt();
     this.subscribe();
   }
+  createElemnt() {
+    this.createCoinInputSection(this.container.elem);
+    this.createCoinStatusSection(this.container.elem);
+  }
   createCoinInputSection(target) {
-    this.addSection = new Component({
+    this.addSection = new component({
       target: target,
       type: "section",
       id: `${CHARGE_ID}-section`,
@@ -29,7 +32,7 @@ export default class chargeMenu {
     this.createInsertText(this.addSection.elem);
   }
   createInsertTitle(target) {
-    this.insertTitle = new Component({
+    this.insertTitle = new component({
       target: target,
       type: "div",
       id: `${CHARGE_ID}-title`,
@@ -54,7 +57,7 @@ export default class chargeMenu {
     });
   }
   createInsertButton(target) {
-    this.insertButton = new Component({
+    this.insertButton = new component({
       target: target,
       type: "button",
       id: `${CHARGE_ID}-button`,
@@ -65,13 +68,13 @@ export default class chargeMenu {
     });
   }
   createInsertText(target) {
-    this.insertAmountLabel = new Component({
+    this.insertAmountLabel = new component({
       target: target,
       type: "span",
       id: `${CHARGE_ID}-amount-label`,
       innerHtml: "보유 금액:",
     });
-    this.insertAmount = new Component({
+    this.insertAmount = new component({
       target: target,
       type: "span",
       id: `${CHARGE_ID}-amount`,
@@ -79,7 +82,7 @@ export default class chargeMenu {
   }
 
   createCoinStatusSection(target) {
-    this.coinStatusSection = new Component({
+    this.coinStatusSection = new component({
       target: target,
       type: "section",
       id: `${COIN_ID}-section`,
@@ -88,7 +91,7 @@ export default class chargeMenu {
     this.createCoinStatusTable(this.coinStatusSection.elem);
   }
   createCoinStatusTitle(target) {
-    this.productStatusTitle = new Component({
+    this.productStatusTitle = new component({
       target: target,
       type: "div",
       id: `${COIN_ID}-title`,
@@ -107,6 +110,7 @@ export default class chargeMenu {
       },
     });
   }
+
   insertCoin(inputCoin) {
     machineChargeStore.dispatch({
       type: ACTION.ADD,

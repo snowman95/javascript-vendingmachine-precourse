@@ -4,7 +4,6 @@ import { product } from "../product.js";
 const KEY = "product";
 
 const reducer = (state, action) => {
-  console.log(state, action);
   switch (action.type) {
     case ACTION.UPDATE:
       if (state) {
