@@ -6,14 +6,17 @@ const KEY = "product";
 const reducer = (state, action) => {
   switch (action.type) {
     case ACTION.UPDATE:
-      if (state) {
-        const oldData = state.filter(
-          (data) => data.getId() !== action.payload.getId()
-        );
-        return oldData ? [...oldData, action.payload] : [action.payload];
-      } else {
-        return [action.payload];
+      const oldData = state.find(
+        (data) => data.getId() === action.payload.getId()
+      );
+      const rest = state.filter(
+        (data) => data.getId() !== action.payload.getId()
+      );
+      if (oldData) {
+        oldData.add(action.payload);
+        return [...rest, oldData];
       }
+      return [...state, action.payload];
     case ACTION.PURCHASE:
       const target = state.find((data) => data.getId() === action.payload);
       if (target && target.purchase()) {

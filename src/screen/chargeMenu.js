@@ -6,8 +6,8 @@ import { machineChargeStore } from "../store/chargeStore.js";
 import { divideCoin } from "../utils/coinDivider.js";
 import menu from "./menu.js";
 
-const CHARGE_ID = "charge";
-const COIN_ID = "coin";
+const CHARGE_ID = "vending-machine-charge";
+const COIN_ID = "vending-machine-coin";
 
 export default class chargeMenu extends menu {
   constructor(target) {

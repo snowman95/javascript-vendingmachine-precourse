@@ -26,6 +26,6 @@ export default class coinTableRow extends component {
     });
   }
   getMainId() {
-    return `coin-${this.key}-quantity`;
+    return `${this.id}-${this.key}-quantity`;
   }
 }

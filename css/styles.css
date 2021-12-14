@@ -8,6 +8,7 @@
 /* Screens */
 @import "screens/productAddMenu.css";
 @import "screens/chargeMenu.css";
+@import "screens/purchaseMenu.css";
 
 body {
   font-family: "Open Sans", sans-serif;

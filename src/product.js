@@ -12,6 +12,14 @@ export class product {
     this.quantity = this.quantity - 1;
     return true;
   }
+  add(newProduct) {
+    const [name, price, quantity] = newProduct.getStateList();
+    console.log(name, price, quantity);
+    if (price >= 100 && price % 10 === 0) {
+      this.price = price;
+      this.quantity = quantity;
+    }
+  }
   getStateList() {
     return [this.name, this.price, this.quantity];
   }
